@@ -1,0 +1,13 @@
+'Temposlider
+VolymSlider
+'Randomize
+'Spara mönster
+'Andra ljudpaket
+'Andra skalor
+bakgrunds-beat
+------
+
+'Ändra antalet boxar per kolumn & rad
+'spara till midi
+spara till mp3
+Flera fönster
