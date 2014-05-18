@@ -28,7 +28,7 @@ public class Controller extends Observable implements Runnable {
 	public Controller() {
 		sound = new Sound();
 	}
-
+	
 	public void run() {
 
 		while (true) {
@@ -40,6 +40,7 @@ public class Controller extends Observable implements Runnable {
 					bar++;
 					if (bar == boxes.length)
 						bar = 0;
+					
 				}
 
 				for (int i = 0; i < boxes[0].length; i++) {
@@ -49,7 +50,7 @@ public class Controller extends Observable implements Runnable {
 			}
 
 			super.setChanged();
-			super.notifyObservers();
+			super.notifyObservers(true);
 
 			try {
 				int wait = ((1000 * BPM / 60) / 16);
@@ -109,6 +110,8 @@ public class Controller extends Observable implements Runnable {
 		}
 
 		boxes = temp;
+		super.setChanged();
+		super.notifyObservers(true);
 	}
 
 	public void setSize(int x, int y) {

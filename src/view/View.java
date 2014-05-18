@@ -33,7 +33,8 @@ public class View implements Observer {
 
 	private Controller contr;
 	private JFrame f;
-	private JPanel playPanel, beatPanel, t;
+	private JPanel playPanel, beatPanel;
+	private Toolbar t;
 
 	public View(final Controller contr) {
 		this.contr = contr;
@@ -70,6 +71,7 @@ public class View implements Observer {
 		f.repaint();
 //		beatPanel.repaint();
 		f.pack();
+		//t.setPlayingPage(contr.bar);
 //		f.validate();
 //		f.revalidate();
 		

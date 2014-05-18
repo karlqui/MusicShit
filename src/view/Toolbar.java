@@ -13,6 +13,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -25,14 +27,14 @@ import javax.swing.event.ChangeListener;
 import model.MidiFile;
 import controller.Controller;
 
-public class Toolbar extends JPanel {
+public class Toolbar extends JPanel implements Observer {
 	private Controller c;
 	private JButton play, stop, save, midisave, clear, load, randomize, swagmode;
 	private ArrayList<JButton> pageButton = new ArrayList<JButton>();
 	private JSlider tempoSlider, pageSlider;
 	private JComboBox instrument, scale;
 	private JPanel pagePanel = new JPanel();
-	
+	private int prevIndex;
 	
 	@Override
 	public Dimension getPreferredSize() {
@@ -41,6 +43,7 @@ public class Toolbar extends JPanel {
 
 	public Toolbar(final Controller c) {
 		this.c = c;
+		c.addObserver(this);
 		ActionListener listener = new Listener();
 		play = new JButton("PLAY");
 		play.addActionListener(listener);
@@ -280,6 +283,21 @@ public class Toolbar extends JPanel {
 //			//Ändra valda dropdown-alternativ
 //		}
 
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		this.repaint();
+		if (arg1 != null && (boolean)arg1) {
+			if(prevIndex != c.currentPage)
+				pageButton.get(prevIndex).setBackground(null);
+			else
+				pageButton.get(prevIndex).setBackground(Color.gray);
+			
+			prevIndex = c.bar;
+			pageButton.get(c.bar).setBackground(Color.red);
+		}
+		
 	}
 
 }
