@@ -76,6 +76,7 @@ public class Toolbar extends JPanel implements Observer {
 
 		scale.addItem("pentatonic");
 		scale.addItem("egyptian");
+		scale.addItem("blues");
 		scale.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				c.getSound().changeScale((String) scale.getSelectedObjects()[0]);

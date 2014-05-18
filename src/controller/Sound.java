@@ -125,6 +125,27 @@ public class Sound {
 			};
 			this.url = url;
 		}	
+		else if (scale.equals("blues")) {
+			String url[] = {
+					"audio/" + pack + "/C3.wav",
+					"audio/" + pack + "/D#3.wav",
+					"audio/" + pack + "/F3.wav",
+					"audio/" + pack + "/F#3.wav",
+					"audio/" + pack + "/G3.wav",
+					"audio/" + pack + "/A#3.wav",
+					"audio/" + pack + "/C4.wav",
+					"audio/" + pack + "/D#4.wav",
+					"audio/" + pack + "/F4.wav",
+					"audio/" + pack + "/F#4.wav",
+					"audio/" + pack + "/G4.wav",
+					"audio/" + pack + "/A#4.wav",
+					"audio/" + pack + "/C5.wav",
+					"audio/" + pack + "/D#5.wav",
+					"audio/" + pack + "/F5.wav",
+					"audio/" + pack + "/F#5.wav",
+			};
+			this.url = url;
+		}	
 	}
 	
 	public int getMidiNote(int i) {
