@@ -68,7 +68,7 @@ public class Controller extends Observable implements Runnable {
 
 			for (int i = 0; i < boxes[0].length; i++) {
 				for (int j = 0; j < boxes[0][0].length; j++) {
-					if (Math.random() < 0.15) {
+					if (Math.random() < 0.12) {
 						boxes[k][i][j] = true;
 						// //Om det är samma fast annan oktav
 						// if (boxes[i][j%5] == false)
@@ -197,6 +197,10 @@ public class Controller extends Observable implements Runnable {
 
 	public boolean[][][] getBoxes() {
 		return boxes;
+	}
+	
+	public void setBoxes(boolean[][][] boxes) {
+		this.boxes = boxes;
 	}
 
 	public Sound getSound() {

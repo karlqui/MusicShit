@@ -35,10 +35,10 @@ public class Toolbar extends JPanel implements Observer {
 	private JComboBox instrument, scale;
 	private JPanel pagePanel = new JPanel();
 	private int prevIndex;
-	
+
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(0, 130);	
+		return new Dimension(0, 130);
 	}
 
 	public Toolbar(final Controller c) {
@@ -90,21 +90,20 @@ public class Toolbar extends JPanel implements Observer {
 
 		swagmode = new JButton("SWAGMODE");
 		swagmode.addActionListener(listener);
-		
+
 		ActionListener buttonListner = new ButtonListener();
 		JButton temp = new JButton("1");
 		temp.addActionListener(buttonListner);
 		temp.setBackground(Color.gray);
 		pageButton.add(temp);
-		
+
 		temp = new JButton("+");
 		temp.addActionListener(buttonListner);
 		pageButton.add(temp);
-		
+
 		pagePanel.add(pageButton.get(0));
 		pagePanel.add(pageButton.get(1));
-		
-		
+
 		GridLayout layout = new GridLayout(0, 4);
 		setLayout(layout);
 
@@ -121,46 +120,45 @@ public class Toolbar extends JPanel implements Observer {
 		this.add(tempoSlider);
 		this.add(new JPanel());
 		this.add(pagePanel);
-		
 
 	}
 
 	public void paintComponent(Graphics g) {
 
 	}
-	
+
 	private class ButtonListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("+")) {
 				JButton temp = new JButton(pageButton.size() + "");
 				temp.addActionListener(this);
-				pageButton.add(pageButton.size() - 1, temp);		
+				pageButton.add(pageButton.size() - 1, temp);
 				pageButton.get(c.currentPage).setBackground(null);
 				c.addPage();
-				c.currentPage = pageButton.size()-2;
+				c.currentPage = pageButton.size() - 2;
 				pageButton.get(c.currentPage).setBackground(Color.gray);
-			}
-			else {
-				pageButton.get(c.currentPage).setBackground(null);;
+			} else {
+				pageButton.get(c.currentPage).setBackground(null);
+				;
 				int page = Integer.parseInt(e.getActionCommand());
-				c.currentPage = page-1;
-				
-				pageButton.get(page-1).setBackground(Color.gray);
-				
+				c.currentPage = page - 1;
+
+				pageButton.get(page - 1).setBackground(Color.gray);
+
 			}
-			
+
 			pagePanel.removeAll();
-			
+
 			for (int i = 0; i < pageButton.size(); i++) {
 				pagePanel.add(pageButton.get(i));
 			}
-			
+
 			pagePanel.repaint();
 			pagePanel.revalidate();
-			
+
 		}
-		
+
 	}
 
 	private class Listener implements ActionListener {
@@ -176,15 +174,16 @@ public class Toolbar extends JPanel implements Observer {
 			} else if (e.getActionCommand().equals("SAVE"))
 				save();
 			else if (e.getActionCommand().equals("LOAD")) {
-//				load();
+				 load();
 			} else if (e.getActionCommand().equals("RANDOMIZE")) {
 				c.randomize();
 			} else if (e.getActionCommand().equals("SWAGMODE")) {
-//				clear();
-//				c.swagMode();
+				// clear();
+				// c.swagMode();
 			} else if (e.getActionCommand().equals("SAVE MIDI")) {
 				MidiFile mf = new MidiFile();
-//				mf.playSequence(c.getBoxes(), c.getSound(), tempoSlider.getValue());
+				// mf.playSequence(c.getBoxes(), c.getSound(),
+				// tempoSlider.getValue());
 
 				try {
 					mf.writeToFile("test1.mid");
@@ -195,8 +194,6 @@ public class Toolbar extends JPanel implements Observer {
 			}
 
 		}
-
-		
 
 		public void save() {
 			JFileChooser fc = new JFileChooser();
@@ -209,87 +206,102 @@ public class Toolbar extends JPanel implements Observer {
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
-			
-			//Sparar metadata, 5 rader
-			writer.println(c.getBoxes().length);
-			writer.println(c.getBoxes()[0].length);
-			writer.println(c.getSound().getPack());
-			writer.println(c.getSound().getScale());
-			writer.println(c.BPM);
-			
-			//Sparar mönstret
+
+			// Sparar metadata, 6 rader
+			writer.println(c.getBoxes().length); // Antalet sidor
+			writer.println(c.getBoxes()[0].length); // Antalet rader
+			writer.println(c.getBoxes()[0][0].length); // Antalet kolumner
+			writer.println(c.getSound().getPack()); // Ljudpaket
+			writer.println(c.getSound().getScale()); // Skala
+			writer.println(c.BPM); // BPM
+
+			// Sparar mönstret
 			for (int i = 0; i < c.getBoxes().length; i++) {
-				for (int j = 0; j < c.getBoxes()[i].length; j++) {
-					writer.print(c.getBoxes()[i][j] + " ");
+				for (int j = 0; j < c.getBoxes()[0].length; j++) {
+					for (int k = 0; k < c.getBoxes()[0][0].length; k++) {
+						writer.print(c.getBoxes()[i][j][k] + " ");
+					}
+					writer.println();
 				}
-				writer.println();
 			}
 			writer.close();
 		}
 
-//		public void load() {
-//			JFileChooser fc = new JFileChooser();
-//			fc.setCurrentDirectory(new File("."));
-//			fc.showOpenDialog(null);
-//			File file = fc.getSelectedFile();
-//
-//			BufferedReader br = null;
-//			String line = "";
-//
-//			try {
-//				br = new BufferedReader(new FileReader(file));
-//				
-//				//Läser in 5 rader metadata
-////				c.setSize(Integer.parseInt(br.readLine()), Integer.parseInt(br.readLine()));
-//				c.getSound().changepack(br.readLine());
-//				c.getSound().changeScale(br.readLine());
-//				c.BPM = Integer.parseInt(br.readLine());				
-//				line = br.readLine();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			
-//			
-//			int row = 0;
-//			while (line != null) {
-//				String[] tokens = line.split(" ");
-//				for (int i = 0; i < tokens.length; i++) {
-//					if (tokens[i].equals("true"))
-//						c.getBoxes()[row][i] = true;
-//					else
-//						c.getBoxes()[row][i] = false;
-//				}
-//
-//				try {
-//					line = br.readLine();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				row++;
-//
-//			}
-//			c.beat = 0;
-//			
-//			//TODO
-//			//Ändra valda dropdown-alternativ
-//		}
+		public void load() {
+			JFileChooser fc = new JFileChooser();
+			fc.setCurrentDirectory(new File("."));
+			fc.showOpenDialog(null);
+			File file = fc.getSelectedFile();
+
+			BufferedReader br = null;
+			
+			pageButton.clear();
+
+			try {
+				br = new BufferedReader(new FileReader(file));
+
+				// Läser in 6 rader metadata
+				boolean[][][] boxes = new boolean[Integer.parseInt(br.readLine())][Integer.parseInt(br.readLine())][Integer.parseInt(br.readLine())];
+				c.getSound().changepack(br.readLine());
+				c.getSound().changeScale(br.readLine());
+				c.BPM = Integer.parseInt(br.readLine());
+				
+				
+				// Återskapar boxarna
+				for (int i = 0; i < boxes.length; i++) {
+					
+					JButton temp = new JButton(i+1 + "");
+					temp.addActionListener(new ButtonListener());
+					pageButton.add(temp);
+					for (int j = 0; j < boxes[0].length; j++) {
+						String [] line = br.readLine().split(" ");
+						for (int k = 0; k < boxes[0][0].length; k++) {
+							boxes[i][j][k] = line[k].equals("true");
+						}
+					}
+				}				
+				c.setBoxes(boxes);
+				JButton temp = new JButton("+");
+				temp.addActionListener(new ButtonListener());
+				pageButton.add(temp);
+
+				pagePanel.removeAll();
+
+				for (int i = 0; i < pageButton.size(); i++) {
+					pagePanel.add(pageButton.get(i));
+				}
+				pagePanel.repaint();
+				pagePanel.revalidate();
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			
+			//Börjar från början
+			c.beat = 0;
+			c.bar = 0;
+			
+
+			// TODO
+			// Ändra valda dropdown-alternativ
+		}
 
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		this.repaint();
-		if (arg1 != null && (boolean)arg1) {
-			if(prevIndex != c.currentPage)
+		if (arg1 != null && (boolean) arg1) {
+			if (prevIndex != c.currentPage)
 				pageButton.get(prevIndex).setBackground(null);
 			else
 				pageButton.get(prevIndex).setBackground(Color.gray);
-			
+
 			prevIndex = c.bar;
 			pageButton.get(c.bar).setBackground(Color.red);
 		}
-		
+
 	}
 
 }
