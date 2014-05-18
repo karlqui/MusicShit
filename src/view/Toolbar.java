@@ -172,13 +172,13 @@ public class Toolbar extends JPanel implements Observer {
 			else if (e.getActionCommand().equals("STOP"))
 				c.stop();
 			else if (e.getActionCommand().equals("CLEAR")) {
-				clear();
+				c.clear();
 			} else if (e.getActionCommand().equals("SAVE"))
 				save();
 			else if (e.getActionCommand().equals("LOAD")) {
 //				load();
 			} else if (e.getActionCommand().equals("RANDOMIZE")) {
-//				c.randomize();
+				c.randomize();
 			} else if (e.getActionCommand().equals("SWAGMODE")) {
 //				clear();
 //				c.swagMode();
@@ -196,15 +196,7 @@ public class Toolbar extends JPanel implements Observer {
 
 		}
 
-		private void clear() {
-			for (int i = 0; i < c.getBoxes().length; i++) {
-				for (int j = 0; j < c.getBoxes()[i].length; j++) {
-					for (int j2 = 0; j2 < c.getBoxes().length; j2++) {
-						c.getBoxes()[i][j][j2] = false;
-					}					
-				}
-			}
-		}
+		
 
 		public void save() {
 			JFileChooser fc = new JFileChooser();

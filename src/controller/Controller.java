@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javax.swing.border.Border;
+
 import model.MidiFile;
 
 public class Controller extends Observable implements Runnable {
@@ -28,7 +30,7 @@ public class Controller extends Observable implements Runnable {
 	public Controller() {
 		sound = new Sound();
 	}
-	
+
 	public void run() {
 
 		while (true) {
@@ -40,7 +42,7 @@ public class Controller extends Observable implements Runnable {
 					bar++;
 					if (bar == boxes.length)
 						bar = 0;
-					
+
 				}
 
 				for (int i = 0; i < boxes[0].length; i++) {
@@ -61,33 +63,36 @@ public class Controller extends Observable implements Runnable {
 		}
 	}
 
-	// public void randomize() {
-	// for (int i = 0; i < boxes.length; i++) {
-	// for (int j = 0; j < boxes[i].length; j++) {
-	// if (Math.random() < 0.15) {
-	// boxes[i][j] = true;
-	// // //Om det är samma fast annan oktav
-	// // if (boxes[i][j%5] == false)
-	//
-	// // Om det finns en ruta precis under ller över rutan
-	// if (i < boxes.length - 1 && i > 1)
-	// if (boxes[i + 1][j] == true || boxes[i - 1][j])
-	// boxes[i][j] = false;
-	//
-	// // Om det finns mer en fyra rutor på samma beat
-	// int counter = 0;
-	// for (int j2 = 0; j2 < boxes[i].length; j2++) {
-	// if (boxes[i][j2])
-	// counter++;
-	// }
-	// if (counter > 4)
-	// boxes[i][j] = false;
-	//
-	// } else
-	// boxes[i][j] = false;
-	// }
-	// }
-	// }
+	public void randomize() {
+		for (int k = 0; k < boxes.length; k++) {
+
+			for (int i = 0; i < boxes[0].length; i++) {
+				for (int j = 0; j < boxes[0][0].length; j++) {
+					if (Math.random() < 0.15) {
+						boxes[k][i][j] = true;
+						// //Om det är samma fast annan oktav
+						// if (boxes[i][j%5] == false)
+
+						// Om det finns en ruta precis under ller över rutan
+						if (i < boxes.length - 1 && i > 1)
+							if (boxes[k][i + 1][j] == true || boxes[k][i - 1][j])
+								boxes[k][i][j] = false;
+
+						// Om det finns mer en fyra rutor på samma beat
+						int counter = 0;
+						for (int j2 = 0; j2 < boxes[k][i].length; j2++) {
+							if (boxes[k][i][j2])
+								counter++;
+						}
+						if (counter > 4)
+							boxes[k][i][j] = false;
+
+					} else
+						boxes[k][i][j] = false;
+				}
+			}
+		}
+	}
 
 	public void play() {
 		play = true;
@@ -196,6 +201,10 @@ public class Controller extends Observable implements Runnable {
 
 	public Sound getSound() {
 		return sound;
+	}
+
+	public void clear() {
+		boxes = new boolean[boxes.length][boxes[0].length][boxes[0][0].length];
 	}
 
 }
