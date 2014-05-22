@@ -42,6 +42,9 @@ public class Controller extends Observable implements Runnable {
 					bar++;
 					if (bar == boxes.length)
 						bar = 0;
+					super.setChanged();
+					super.notifyObservers(11); // 11 = aktuella sidan har
+												// ändrats
 
 				}
 
@@ -52,7 +55,7 @@ public class Controller extends Observable implements Runnable {
 			}
 
 			super.setChanged();
-			super.notifyObservers(true);
+			super.notifyObservers();
 
 			try {
 				int wait = ((1000 * BPM / 60) / 16);
@@ -116,7 +119,7 @@ public class Controller extends Observable implements Runnable {
 
 		boxes = temp;
 		super.setChanged();
-		super.notifyObservers(true);
+		super.notifyObservers(11);
 	}
 
 	public void setSize(int x, int y) {
@@ -152,7 +155,7 @@ public class Controller extends Observable implements Runnable {
 		boxes = b;
 
 		super.setChanged();
-		super.notifyObservers(true);
+		super.notifyObservers(10); // 10 = storleken har ändrats
 
 	}
 
@@ -198,7 +201,7 @@ public class Controller extends Observable implements Runnable {
 	public boolean[][][] getBoxes() {
 		return boxes;
 	}
-	
+
 	public void setBoxes(boolean[][][] boxes) {
 		this.boxes = boxes;
 	}
@@ -209,6 +212,15 @@ public class Controller extends Observable implements Runnable {
 
 	public void clear() {
 		boxes = new boolean[boxes.length][boxes[0].length][boxes[0][0].length];
+	}
+
+	public void setMode(String mode) {
+		super.setChanged();
+		if (mode.equals("EDIT"))
+			super.notifyObservers(0);
+		else if (mode.equals("SELECT"))
+			super.notifyObservers(1);
+
 	}
 
 }

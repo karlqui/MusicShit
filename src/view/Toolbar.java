@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -28,21 +29,27 @@ import model.MidiFile;
 import controller.Controller;
 
 public class Toolbar extends JPanel implements Observer {
+	private static int COMPONENTS_PER_ROW = 4;
+	private int HEIGHT = 150;
+	
 	private Controller c;
 	private JButton play, stop, save, midisave, clear, load, randomize, swagmode;
 	private ArrayList<JButton> pageButton = new ArrayList<JButton>();
 	private JSlider tempoSlider, pageSlider;
 	private JComboBox instrument, scale;
 	private JPanel pagePanel = new JPanel();
+	private JPanel toolPanel = new JPanel();
+	private JPanel []rows = new JPanel[4];;
 	private int prevIndex;
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(0, 130);
+		return new Dimension(0, HEIGHT);
 	}
 
 	public Toolbar(final Controller c) {
 		this.c = c;
+		this.setFocusable(true);
 		c.addObserver(this);
 		ActionListener listener = new Listener();
 		play = new JButton("PLAY");
@@ -104,23 +111,49 @@ public class Toolbar extends JPanel implements Observer {
 
 		pagePanel.add(pageButton.get(0));
 		pagePanel.add(pageButton.get(1));
+		temp = new JButton("EDIT");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c.setMode("EDIT");
+			}
+		});
+		toolPanel.add(temp);
+		temp = new JButton("SELECT");
+		temp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c.setMode("SELECT");
+			}
+		});
+		toolPanel.add(temp);
+		
 
-		GridLayout layout = new GridLayout(0, 4);
+		GridLayout layout = new GridLayout(0, 1);
 		setLayout(layout);
 
-		this.add(play);
-		this.add(stop);
-		this.add(save);
-		this.add(load);
-		this.add(clear);
-		this.add(midisave);
-		this.add(randomize);
-		this.add(swagmode);
-		this.add(instrument);
-		this.add(scale);
-		this.add(tempoSlider);
-		this.add(new JPanel());
-		this.add(pagePanel);
+		for (int i = 0; i < rows.length; i++) {
+			rows[i] = new JPanel();
+			rows[i].setLayout(new GridLayout(0,COMPONENTS_PER_ROW));
+			rows[i].setPreferredSize(new Dimension(0,HEIGHT/rows.length));
+			this.add(rows[i]);
+		}
+		rows[rows.length-1].setLayout(new FlowLayout());
+		
+		rows[0].add(play);
+		rows[0].add(stop);
+		rows[0].add(save);
+		rows[0].add(load);
+		rows[1].add(clear);
+		rows[1].add(midisave);
+		rows[1].add(randomize);
+		rows[1].add(swagmode);
+		rows[2].add(instrument);
+		rows[2].add(scale);
+		rows[2].add(tempoSlider);
+		rows[2].add(toolPanel);
+		
+		
+		rows[rows.length-1].add(pagePanel);
+
 
 	}
 
@@ -141,7 +174,6 @@ public class Toolbar extends JPanel implements Observer {
 				pageButton.get(c.currentPage).setBackground(Color.gray);
 			} else {
 				pageButton.get(c.currentPage).setBackground(null);
-				;
 				int page = Integer.parseInt(e.getActionCommand());
 				c.currentPage = page - 1;
 
@@ -293,7 +325,7 @@ public class Toolbar extends JPanel implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		this.repaint();
-		if (arg1 != null && (boolean) arg1) {
+		if (arg1 != null && (int) arg1 == 11) {
 			if (prevIndex != c.currentPage)
 				pageButton.get(prevIndex).setBackground(null);
 			else
